@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Producer {
+  id      String @id @default(uuid())
+  cpfCnpj String @unique @map("cpf_cnpj")
+  name    String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  properties Property[]
+
+  @@map("producers")
+}
+
+model Property {
+  id             String @id @default(uuid())
+  name           String
+  city           String
+  state          String
+  totalArea      Int
+  arableArea     Int
+  vegetationArea Int
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  producerId String
+  producer   Producer @relation(fields: [producerId], references: [id])
+  crops      Crop[]
+
+  @@map("properties")
+}
+
+model Crop {
+  id     String @id @default(uuid())
+  name   String
+  season String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id])
+
+  @@map("crops")
+}
