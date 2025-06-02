@@ -11,7 +11,6 @@ const prismaMock = {
 
 describe('ProducerCreateService', () => {
   let service: ProducerCreateService;
-  let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,7 +20,6 @@ describe('ProducerCreateService', () => {
       ],
     }).compile();
 
-    prismaService = module.get<PrismaService>(PrismaService);
     service = module.get<ProducerCreateService>(ProducerCreateService);
   });
 
@@ -31,5 +29,57 @@ describe('ProducerCreateService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('deve criar um produtor com sucesso', async () => {
+    const dto = {
+      cpfCnpj: '123.456.789-09',
+      name: 'Produtor Teste',
+    };
+    const now = new Date();
+    prismaMock.producer.findFirst.mockResolvedValue(null);
+    prismaMock.producer.create.mockResolvedValue({
+      id: '1',
+      cpfCnpj: '12345678909',
+      name: 'Produtor Teste',
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    const result = await service.run(dto);
+    expect(prismaMock.producer.findFirst).toHaveBeenCalledWith({
+      where: { cpfCnpj: '12345678909' },
+    });
+    expect(prismaMock.producer.create).toHaveBeenCalledWith({
+      data: { cpfCnpj: '12345678909', name: 'Produtor Teste' },
+    });
+    expect(result).toEqual({
+      id: '1',
+      cpfCnpj: '12345678909',
+      name: 'Produtor Teste',
+      createdAt: now,
+      updatedAt: now,
+    });
+  });
+
+  it('deve lançar erro se CPF/CNPJ já existir', async () => {
+    const dto = {
+      cpfCnpj: '123.456.789-09',
+      name: 'Produtor Teste',
+    };
+    const now = new Date();
+    prismaMock.producer.findFirst.mockResolvedValue({
+      id: '1',
+      cpfCnpj: '12345678909',
+      name: 'Produtor Teste',
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    await expect(service.run(dto)).rejects.toThrow();
+    expect(prismaMock.producer.findFirst).toHaveBeenCalledWith({
+      where: { cpfCnpj: '12345678909' },
+    });
+    expect(prismaMock.producer.create).not.toHaveBeenCalled();
   });
 });
