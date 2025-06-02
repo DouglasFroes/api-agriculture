@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, IsUUID, Min } from 'class-validator';
 
 export class PropertyCreateDto {
   @IsString()
@@ -27,5 +27,6 @@ export class PropertyCreateDto {
 
   @IsString()
   @IsNotEmpty()
+  @IsUUID()
   producerId: string;
 }

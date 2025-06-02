@@ -2,6 +2,8 @@ import { validate } from 'class-validator';
 import 'reflect-metadata';
 import { PropertyCreateDto } from './property-create.dto';
 
+const uuid = 'f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454';
+
 describe('PropertyCreateDto', () => {
   it('deve ser válido com todos os campos obrigatórios', async () => {
     const dto = new PropertyCreateDto();
@@ -11,7 +13,7 @@ describe('PropertyCreateDto', () => {
     dto.totalArea = 100;
     dto.arableArea = 60;
     dto.vegetationArea = 40;
-    dto.producerId = 'uuid-producer';
+    dto.producerId = uuid;
     const errors = await validate(dto);
     expect(errors.length).toBe(0);
   });
@@ -30,7 +32,7 @@ describe('PropertyCreateDto', () => {
     dto.totalArea = -1;
     dto.arableArea = -1;
     dto.vegetationArea = -1;
-    dto.producerId = 'uuid-producer';
+    dto.producerId = uuid;
     const errors = await validate(dto);
     expect(errors.some((e) => e.property === 'totalArea')).toBe(true);
     expect(errors.some((e) => e.property === 'arableArea')).toBe(true);
