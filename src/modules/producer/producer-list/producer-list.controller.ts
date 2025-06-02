@@ -8,7 +8,7 @@ import { ProducerListService } from './producer-list.service';
 export class ProducerListController {
   constructor(private readonly producerListService: ProducerListService) {}
 
-  @Get('list')
+  @Get()
   async list(@Query() query: producerListDto) {
     return this.producerListService.run(query);
   }

@@ -1,10 +1,10 @@
-import { IsNotEmpty, IsString, Validate } from 'class-validator';
-import { validateCpfCnpj } from 'src/utils/validateCpfCnpj';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { IsCpfCnpj } from 'src/utils/IsCpfCnpj';
 
 export class ProducerCreateDto {
   @IsString()
   @IsNotEmpty()
-  @Validate(validateCpfCnpj, { message: 'Invalid CPF or CNPJ format' })
+  @IsCpfCnpj()
   cpfCnpj: string;
 
   @IsString()

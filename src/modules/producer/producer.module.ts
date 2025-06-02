@@ -8,9 +8,9 @@ import { ProducerUpdateModule } from './producer-update/producer-update.module';
 @Module({
   imports: [
     ProducerCreateModule,
+    ProducerListModule,
     ProducerDeleteModule,
     ProducerFindModule,
-    ProducerListModule,
     ProducerUpdateModule,
   ],
 })

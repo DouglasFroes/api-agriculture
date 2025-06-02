@@ -7,7 +7,7 @@ import { ProducerFindService } from './producer-find.service';
 export class ProducerFindController {
   constructor(private readonly producerFindService: ProducerFindService) {}
 
-  @Get()
+  @Get(':id')
   async find(@Param('id', ParseUUIDPipe) id: string) {
     return this.producerFindService.run(id);
   }

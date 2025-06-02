@@ -8,6 +8,7 @@ export class ProducerFindService {
   async run(id: string) {
     const producer = await this.prismaService.producer.findUnique({
       where: { id },
+      include: { properties: true },
     });
 
     if (!producer) {

@@ -1,3 +1,5 @@
+import { showLog } from './showLog';
+
 function validateCpf(cpf: string): boolean {
   if (!cpf || cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
     return false; // Invalid CPF format or all digits are the same
@@ -27,6 +29,8 @@ function validateCnpj(cnpj: string): boolean {
 
 export function validateCpfCnpj(value: string): boolean {
   if (!value) return false;
+
+  showLog('Validating CPF/CNPJ:', value);
 
   // Remove non-numeric characters
   const cleanedValue = value.replace(/\D/g, '');

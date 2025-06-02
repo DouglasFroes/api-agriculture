@@ -7,8 +7,9 @@ export class ProducerCreateService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async run(data: ProducerCreateDto) {
+    const cpfCnpj = data.cpfCnpj.replace(/\D/g, '');
     const isExisted = await this.prismaService.producer.findFirst({
-      where: { cpfCnpj: data.cpfCnpj },
+      where: { cpfCnpj },
     });
 
     if (isExisted) {
@@ -17,7 +18,7 @@ export class ProducerCreateService {
 
     return await this.prismaService.producer.create({
       data: {
-        cpfCnpj: data.cpfCnpj,
+        cpfCnpj,
         name: data.name,
       },
     });

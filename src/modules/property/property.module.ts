@@ -12,8 +12,6 @@ import { PropertyUpdateModule } from './property-update/property-update.module';
     PropertyFindModule,
     PropertyUpdateModule,
     PropertyDeleteModule,
-    // ...other modules
   ],
-  // ...other metadata
 })
 export class PropertyModule {}
