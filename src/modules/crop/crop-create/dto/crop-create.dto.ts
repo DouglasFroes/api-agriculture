@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
+  IsUUID,
   Max,
   Min,
 } from 'class-validator';
@@ -19,6 +20,7 @@ export class CropCreateDto {
   year: number;
 
   @IsString()
+  @IsUUID()
   @IsNotEmpty()
   propertyId: string;
 }
