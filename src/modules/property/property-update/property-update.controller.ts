@@ -1,7 +1,7 @@
-import { Controller, Patch, Param, Body, ParseUUIDPipe } from '@nestjs/common';
+import { Body, Controller, Param, ParseUUIDPipe, Patch } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { PropertyUpdateService } from './property-update.service';
 import { PropertyUpdateDto } from './dto/property-update.dto';
+import { PropertyUpdateService } from './property-update.service';
 
 @ApiTags('Properties')
 @Controller('properties')

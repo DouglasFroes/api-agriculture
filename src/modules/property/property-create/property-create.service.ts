@@ -9,10 +9,11 @@ export class PropertyCreateService {
   async run(data: PropertyCreateDto) {
     if (data.arableArea + data.vegetationArea > data.totalArea) {
       throw new BadRequestException(
-        'A soma das áreas agricultável e de vegetação não pode ultrapassar a área total.',
+        'The sum of arable and vegetation areas cannot exceed the total area',
       );
     }
-    return this.prismaService.property.create({
+
+    return await this.prismaService.property.create({
       data: {
         name: data.name,
         city: data.city,

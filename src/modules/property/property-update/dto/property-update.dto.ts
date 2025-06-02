@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsInt, Min, IsOptional } from 'class-validator';
+import { IsInt, IsOptional, IsString, Min } from 'class-validator';
 
 export class PropertyUpdateDto {
   @IsOptional()
