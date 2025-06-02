@@ -1,68 +1,71 @@
 import { faker } from '@faker-js/faker';
-import { PrismaClient, Producer, Property } from '../generated/prisma';
+import { PrismaClient } from 'generated/prisma';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  // Gera produtores
-  const producers: Producer[] = [];
-  for (let i = 0; i < 50; i++) {
-    const isCpf = faker.datatype.boolean();
-    const cpfCnpj = isCpf ? faker.string.numeric(11) : faker.string.numeric(14);
-    producers.push(
-      await prisma.producer.create({
-        data: {
-          cpfCnpj,
-          name: faker.person.fullName(),
-        },
-      }),
-    );
-  }
+  // Limpa dados existentes
+  await prisma.crop.deleteMany();
+  await prisma.property.deleteMany();
+  await prisma.producer.deleteMany();
 
-  // Gera propriedades
-  const properties: Property[] = [];
-  for (let i = 0; i < 200; i++) {
-    const producerIdx = Math.floor(Math.random() * producers.length);
-    const producer = producers[producerIdx];
-    const totalArea = faker.number.int({ min: 50, max: 1000 });
-    const arableArea = faker.number.int({ min: 10, max: totalArea - 10 });
-    const vegetationArea = totalArea - arableArea;
-    const property = await prisma.property.create({
+  const producers = [];
+  for (let i = 0; i < 50; i++) {
+    const producer = await prisma.producer.create({
       data: {
-        name: faker.company.name(),
-        city: faker.location.city(),
-        state: faker.location.state({ abbreviated: true }),
-        totalArea,
-        arableArea,
-        vegetationArea,
-        producerId: producer.id,
+        cpfCnpj: faker.helpers.replaceSymbolWithNumber('###########'),
+        name: faker.person.fullName(),
       },
     });
-    properties.push(property);
+    producers.push(producer);
   }
 
-  // Gera culturas
+  const properties = [];
+  for (const producer of producers) {
+    const numProperties = faker.number.int({ min: 1, max: 3 });
+    for (let i = 0; i < numProperties; i++) {
+      const totalArea = faker.number.int({ min: 50, max: 1000 });
+      const arableArea = faker.number.int({ min: 20, max: totalArea - 10 });
+      const vegetationArea = totalArea - arableArea;
+      const property = await prisma.property.create({
+        data: {
+          name: `Fazenda ${faker.word.adjective()} ${faker.word.noun()}`,
+          city: faker.location.city(),
+          state: faker.location.state({ abbreviated: true }),
+          totalArea,
+          arableArea,
+          vegetationArea,
+          producerId: producer.id,
+        },
+      });
+      properties.push(property);
+    }
+  }
+
   const cropNames = [
     'Soja',
     'Milho',
     'Café',
     'Algodão',
     'Trigo',
+    'Cana-de-açúcar',
     'Feijão',
     'Arroz',
   ];
-
-  for (let i = 0; i < 500; i++) {
-    const propertyIdx = Math.floor(Math.random() * properties.length);
-    const property = properties[propertyIdx];
-    await prisma.crop.create({
-      data: {
-        name: faker.helpers.arrayElement(cropNames),
-        year: faker.number.int({ min: 2020, max: 2025 }),
-        propertyId: property.id,
-      },
-    });
+  for (const property of properties) {
+    const numCrops = faker.number.int({ min: 1, max: 4 });
+    for (let i = 0; i < numCrops; i++) {
+      await prisma.crop.create({
+        data: {
+          name: faker.helpers.arrayElement(cropNames),
+          year: faker.number.int({ min: 2020, max: 2025 }),
+          propertyId: property.id,
+        },
+      });
+    }
   }
+
+  console.log('Seed concluído com sucesso!');
 }
 
 main()
