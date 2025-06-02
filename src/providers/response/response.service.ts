@@ -10,34 +10,18 @@ export interface IRequestPagination<T> {
   total: number;
   limit: number;
   currentPage: number;
-  message?: string;
 }
 
 @Injectable()
 @Global()
 export class ResponseService<T> {
-  pagination({
-    currentPage,
-    data,
-    limit,
-    total,
-    message,
-  }: IRequestPagination<T>) {
+  pagination({ currentPage, data, limit, total }: IRequestPagination<T>) {
     const perPage = Math.ceil(total / limit);
 
     if ((currentPage > perPage || currentPage < 1) && currentPage !== 1) {
       throw new NotFoundException();
     }
 
-    return {
-      message: message || 'Sucesso',
-      payload: {
-        data,
-        total,
-        currentPage,
-        perPage,
-        limit,
-      },
-    };
+    return { data, total, currentPage, perPage, limit };
   }
 }
