@@ -47,9 +47,9 @@ model Property {
 }
 
 model Crop {
-  id     String @id @default(uuid())
-  name   String
-  season String
+  id   String @id @default(uuid())
+  name String
+  year Int    @default(1)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

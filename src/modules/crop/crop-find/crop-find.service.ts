@@ -6,8 +6,16 @@ export class CropFindService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async run(id: string) {
-    const crop = await this.prismaService.crop.findUnique({ where: { id } });
+    const crop = await this.prismaService.crop.findUnique({
+      where: { id },
+      include: { property: true },
+    });
+
     if (!crop) throw new NotFoundException('Crop not found');
-    return crop;
+
+    return {
+      fullName: `${crop.name}  na Safra ${crop.year}`,
+      ...crop,
+    };
   }
 }

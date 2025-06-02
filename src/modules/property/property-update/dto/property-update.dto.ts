@@ -1,30 +1,4 @@
-import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { PartialType } from '@nestjs/swagger';
+import { PropertyCreateDto } from '../../property-create/dto/property-create.dto';
 
-export class PropertyUpdateDto {
-  @IsOptional()
-  @IsString()
-  name?: string;
-
-  @IsOptional()
-  @IsString()
-  city?: string;
-
-  @IsOptional()
-  @IsString()
-  state?: string;
-
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  totalArea?: number;
-
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  arableArea?: number;
-
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  vegetationArea?: number;
-}
+export class PropertyUpdateDto extends PartialType(PropertyCreateDto) {}

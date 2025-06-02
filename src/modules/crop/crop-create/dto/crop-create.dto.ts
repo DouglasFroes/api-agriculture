@@ -1,13 +1,22 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 
 export class CropCreateDto {
   @IsString()
-  @IsNotEmpty()
   name: string;
 
-  @IsString()
+  @IsNumber()
+  @IsInt()
+  @Min(1970)
+  @Max(new Date().getFullYear() + 1)
   @IsNotEmpty()
-  season: string;
+  year: number;
 
   @IsString()
   @IsNotEmpty()

@@ -21,9 +21,10 @@ export class PropertyUpdateService {
     const vegetationArea = data.vegetationArea ?? property.vegetationArea;
     if (arableArea + vegetationArea > totalArea) {
       throw new BadRequestException(
-        'A soma das áreas agricultável e de vegetação não pode ultrapassar a área total.',
+        'The sum of arable and vegetation areas cannot exceed the total area',
       );
     }
-    return this.prismaService.property.update({ where: { id }, data });
+
+    await this.prismaService.property.update({ where: { id }, data });
   }
 }

@@ -17,7 +17,7 @@ export class ProducerUpdateController {
   constructor(private readonly producerUpdateService: ProducerUpdateService) {}
 
   @Patch(':id')
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() body: ProducerUpdateDto,

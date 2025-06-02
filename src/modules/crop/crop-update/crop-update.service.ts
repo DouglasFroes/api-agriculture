@@ -8,7 +8,9 @@ export class CropUpdateService {
 
   async run(id: string, data: CropUpdateDto) {
     const crop = await this.prismaService.crop.findUnique({ where: { id } });
+
     if (!crop) throw new NotFoundException('Crop not found');
+
     return this.prismaService.crop.update({ where: { id }, data });
   }
 }

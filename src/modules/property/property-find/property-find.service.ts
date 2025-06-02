@@ -8,8 +8,14 @@ export class PropertyFindService {
   async run(id: string) {
     const property = await this.prismaService.property.findUnique({
       where: { id },
+      include: {
+        producer: true,
+        crops: true,
+      },
     });
+
     if (!property) throw new NotFoundException('Property not found');
+
     return property;
   }
 }
