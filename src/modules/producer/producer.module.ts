@@ -4,7 +4,6 @@ import { ProducerDeleteModule } from './producer-delete/producer-delete.module';
 import { ProducerFindModule } from './producer-find/producer-find.module';
 import { ProducerListModule } from './producer-list/producer-list.module';
 import { ProducerUpdateModule } from './producer-update/producer-update.module';
-import { ProducerCreate2Module } from './producer-create2/producer-create2.module';
 
 @Module({
   imports: [
@@ -13,7 +12,6 @@ import { ProducerCreate2Module } from './producer-create2/producer-create2.modul
     ProducerDeleteModule,
     ProducerFindModule,
     ProducerUpdateModule,
-    ProducerCreate2Module,
   ],
 })
 export class ProducerModule {}
