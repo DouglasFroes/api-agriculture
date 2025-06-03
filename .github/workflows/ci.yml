@@ -31,8 +31,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
+            source ~/.bashrc
             cd ~/test-01
-            nvm use 22
             npm i
             npx prisma migrate dev
             npm run build
