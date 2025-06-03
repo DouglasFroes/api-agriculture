@@ -31,7 +31,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            source ~/.bashrc
+            export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v22.16.0/bin
             cd ~/test-01
             npm i
             npx prisma migrate dev
