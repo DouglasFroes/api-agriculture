@@ -1,91 +1,106 @@
-# **Brain Agriculture - Teste Técnico v2**
+# Brain Agriculture API
 
-Olá! Bem-vindo(a) ao nosso teste técnico. Estamos muito animados para conhecer mais sobre você, suas habilidades técnicas e sua forma de resolver problemas. Este teste foi pensado para ser um reflexo do que valorizamos em nosso time, e esperamos que você se sinta confortável e confiante durante o processo.
+API para gerenciamento de produtores rurais, propriedades e culturas.
 
-## **O que queremos avaliar?**
+## Requisitos
 
-Nosso objetivo com este teste é entender melhor como você:
+- Node.js 22+
+- Docker e Docker Compose
 
-- Resolve problemas relacionados à lógica de programação e orientação a objetos.
-- Interpreta requisitos de negócio e os transforma em soluções técnicas.
-- Aplica boas práticas de desenvolvimento, com foco em código limpo, testável, de fácil manutenção e observável.
-- Garante que o sistema seja escalável e confiável, principalmente ao lidar com grande volume de dados.
-- Escreve documentações claras para facilitar a integração e manutenção por outros desenvolvedores ou clientes.
+## Como rodar o projeto
 
-**Dica:** Imagine que você está criando uma aplicação que será utilizada por clientes, parceiros ou até mesmo por outros desenvolvedores. Queremos ver sua atenção aos detalhes!
+### Opção 1: Usando Docker (recomendado)
 
-## **O que você precisa desenvolver?**
+1. Clone o repositório
 
-A proposta é criar uma aplicação para gerenciar o cadastro de produtores rurais, com os seguintes dados:
+```sh
+git clone <url-do-repositorio>
+cd api-agriculture
+```
 
-- CPF ou CNPJ
-- Nome do produtor
-- Nome da fazenda (propriedade)
-- Cidade
-- Estado
-- Área total da fazenda (em hectares)
-- Área agricultável (em hectares)
-- Área de vegetação (em hectares)
-- Safras (ex: Safra 2021, Safra 2022)
-- Culturas plantadas (ex.: Soja na Safra 2021, Milho na Safra 2021, Café na Safra 2022)
+2. Suba o banco de dados e a aplicação com Docker Compose
 
-### **Requisitos de negócio**
+```sh
+docker-compose up --build
+```
 
-1. Permitir o cadastro, edição e exclusão de produtores rurais.
-2. Validar o CPF ou CNPJ fornecido pelo usuário.
-3. Garantir que a soma das áreas agricultável e de vegetação não ultrapasse a área total da fazenda.
-4. Permitir o registro de várias culturas plantadas por fazenda do produtor.
-5. Um produtor pode estar associado a 0, 1 ou mais propriedades rurais.
-6. Uma propriedade rural pode ter 0, 1 ou mais culturas plantadas por safra.
-7. Exibir um dashboard com:
-   - Total de fazendas cadastradas (quantidade).
-   - Total de hectares registrados (área total).
-   - Gráficos de pizza:
-     - Por estado.
-     - Por cultura plantada.
-     - Por uso do solo (área agricultável e vegetação).
+A aplicação estará disponível em `http://localhost:3000`.
+
+**Acesse a documentação interativa da API em:**
+
+👉 [`http://localhost:3000/api-docs`](http://localhost:3000/api-docs)
+
+### Opção 2: Rodando localmente (sem Docker)
+
+1. Instale as dependências:
+
+```sh
+npm install
+```
+
+2. Suba um banco Postgres localmente (pode usar Docker apenas para o banco):
+
+```sh
+docker run --name agriculture-db -e POSTGRES_DB=agriculture -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:16-alpine
+```
+
+3. Configure o arquivo `.env` na raiz do projeto:
+
+```
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/agriculture
+```
+
+4. Rode as migrações do banco:
+
+```sh
+npx prisma migrate dev
+```
+
+5. Inicie a aplicação:
+
+```sh
+npm run start:dev
+```
+
+A aplicação estará disponível em `http://localhost:3000`.
+
+**Acesse a documentação interativa da API em:**
+
+👉 [`http://localhost:3000/api-docs`](http://localhost:3000/api-docs)
+
+## Mock de dados (Seed)
+
+Para popular o banco com dados de exemplo, execute:
+
+```sh
+npm run prisma:seed
+```
+
+Isso irá criar produtores, propriedades e culturas aleatórias.
+
+## Rodando os testes
+
+### Testes unitários e de integração
+
+```sh
+npm test
+```
+
+### Testes end-to-end (e2e)
+
+```sh
+npm run test:e2e
+```
+
+Os testes e2e estão em `test/app.e2e-spec.ts` e cobrem os principais fluxos da API.
+
+## Observabilidade
+
+O sistema inclui logs nos pontos principais das operações de criação, atualização, exclusão e busca, facilitando o monitoramento e a identificação de problemas.
+
+## Documentação
+
+- O código segue boas práticas de Clean Code, SOLID e arquitetura em camadas.
+- Endpoints RESTful para produtores, propriedades, culturas e dashboard.
 
 ---
-
-## **Tecnologias sugeridas**
-
-Sabemos que você pode ter seu próprio estilo, mas aqui estão algumas tecnologias e boas práticas que valorizamos:
-
-- **Conceitos**: SOLID, KISS, Clean Code, API Contracts, Testes, Arquitetura em camadas.
-- **Documentações**: Para facilitar o entendimento do funcionamento do sistema, é importante incluir um README claro, uma especificação OpenAPI e, caso necessário, diagramas que ajudem a visualizar a arquitetura ou os processos.
-- **Bônus**: Se conseguir disponibilizar a aplicação na nuvem e acessível via internet, será um diferencial!
-
-### **Se você for desenvolvedor BACKEND:**
-
-- Desenvolva uma **API REST**.
-- Utilize **Docker** para distribuir a aplicação.
-- Utilize **Postgres** como banco de dados.
-- Crie os endpoints necessários para atender os requisitos de negócio.
-- Desenvolva testes unitários e integrados.
-- Estruture dados "mockados" para testes.
-- Inclua logs para garantir a observabilidade do sistema, facilitando o monitoramento e a identificação de possíveis problemas.
-- Utilize um framework de ORM.
-
-#### **Se você for desenvolvedor BACKEND Node:**
-
-- Utilize **TypeScript**.
-- Utilize **NestJS** ou **AdonisJS**
-
-#### **Se você for desenvolvedor BACKEND Python:**
-
-- Utilize **Python 3**.
-- Utilize **Django**, **Flask** ou **FastAPI**.
-
-### **Se você for desenvolvedor FULLSTACK:**
-
-- Conclua tanto o FRONTEND quanto o BACKEND, garantindo a integração entre eles.
-
----
-
-## **Como enviar seu projeto?**
-
-Ao concluir o desenvolvimento, suba o código-fonte para um repositório no **GitHub** (ou outro provedor de sua escolha). Certifique-se de que o repositório seja público ou que possamos acessá-lo, e nos envie o link.
-
----
-
-**Nota final:** Queremos que você aproveite esse desafio para mostrar suas habilidades, mas também para aprender e se divertir. Se tiver dúvidas ou precisar de alguma orientação durante o processo, estamos aqui para ajudar! Boa sorte! 🌟
