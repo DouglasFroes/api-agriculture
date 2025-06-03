@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/providers/database/PrismaService';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class ProducerFindService {
     });
 
     if (!producer) {
-      throw new Error('Producer not found');
+      throw new NotFoundException('Producer not found');
     }
 
     return producer;

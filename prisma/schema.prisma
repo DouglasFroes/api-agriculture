@@ -40,7 +40,7 @@ model Property {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   producerId String
-  producer   Producer @relation(fields: [producerId], references: [id])
+  producer   Producer @relation(fields: [producerId], references: [id], onDelete: Cascade)
   crops      Crop[]
 
   @@map("properties")
@@ -55,7 +55,7 @@ model Crop {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   propertyId String
-  property   Property @relation(fields: [propertyId], references: [id])
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
   @@map("crops")
 }
