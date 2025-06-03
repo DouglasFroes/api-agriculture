@@ -1,26 +1,22 @@
 import { faker } from '@faker-js/faker';
-import { PrismaClient } from 'generated/prisma';
+import { PrismaClient, Producer, Property } from '../generated/prisma';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  // Limpa dados existentes
-  await prisma.crop.deleteMany();
-  await prisma.property.deleteMany();
-  await prisma.producer.deleteMany();
-
-  const producers = [];
+  const producers: Producer[] = [];
   for (let i = 0; i < 50; i++) {
     const producer = await prisma.producer.create({
       data: {
-        cpfCnpj: faker.helpers.replaceSymbolWithNumber('###########'),
+        cpfCnpj: faker.string.numeric({ length: 11 }),
         name: faker.person.fullName(),
       },
     });
+
     producers.push(producer);
   }
 
-  const properties = [];
+  const properties: Property[] = [];
   for (const producer of producers) {
     const numProperties = faker.number.int({ min: 1, max: 3 });
     for (let i = 0; i < numProperties; i++) {

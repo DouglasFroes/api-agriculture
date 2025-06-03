@@ -17,11 +17,10 @@ services:
     container_name: agriculture_app
     depends_on:
       - db
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/agriculture
-      NODE_ENV: production
     ports:
       - '3000:3000'
-      
+    env_file:
+      - .env 
+   
 volumes:
   pgdata:

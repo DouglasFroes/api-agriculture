@@ -13,12 +13,8 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Build the app
-RUN npx prisma migrate dev
-RUN npm run build
-
 # Expose port (default NestJS port)
 EXPOSE 3000
 
-# Start the app
-CMD ["npm", "run", "start:prod"]
+# Start the application
+CMD [  "npm", "run", "start:migrate:prod" ]
